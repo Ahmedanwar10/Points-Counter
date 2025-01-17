@@ -1,36 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:points_counter/cubit/counter_cubit.dart';
+import 'package:points_counter/cubit/counter_state.dart';
 
-class Model extends StatefulWidget {
-  const Model({Key? key}) : super(key: key);
 
-  @override
-  State<Model> createState() => _ModelState();
-}
-
-class _ModelState extends State<Model> {
-  int team1Points = 0;
-  int team2Points = 0;
-
-  void reset() {
-    setState(() {
-      team1Points = 0;
-      team2Points = 0;
-    });
-  }
-  void subtractPoint(int team) {
-    setState(() {
-      if (team == 1 && team1Points > 0) {
-        team1Points--;
-      } else if (team == 2 && team2Points > 0) {
-        team2Points--;
-      }
-    });
-  }
-
+class Model extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocConsumer<CounterCubit,CounterIncrementState>(builder: (contextn,state)
+    {
+      return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.green,
@@ -59,7 +39,7 @@ class _ModelState extends State<Model> {
                     ),
                   ),
                   Text(
-                    '$team1Points',
+                    "${BlocProvider.of<CounterCubit>(context).teamAPoints}",
                     style: const TextStyle(
                       fontSize: 100,
                     ),
@@ -70,9 +50,8 @@ class _ModelState extends State<Model> {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      setState(() {
-                        team1Points++;
-                      });
+                    BlocProvider.of<CounterCubit>(context).
+                    TeamAIncrement(team: "A", buttonNumber: 1);
                     },
                     child: const Text(
                       "Add 1 Point",
@@ -86,9 +65,8 @@ class _ModelState extends State<Model> {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      setState(() {
-                        team1Points+=2;
-                      });
+                  BlocProvider.of<CounterCubit>(context).
+                    TeamAIncrement(team: "A", buttonNumber: 2);
                     },
                     child: const Text(
                       "Add 2 Point",
@@ -102,9 +80,8 @@ class _ModelState extends State<Model> {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      setState(() {
-                        team1Points+=3;
-                      });
+                    BlocProvider.of<CounterCubit>(context).
+                    TeamAIncrement(team: "A", buttonNumber:3);
                     },
                     child: const Text(
                       "Add 3 Point",
@@ -118,7 +95,8 @@ class _ModelState extends State<Model> {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      subtractPoint(1);
+                      BlocProvider.of<CounterCubit>(context).
+                    delete(team: "A", buttonNumbe:0);
                     },
                     child: const Text(
                       "Delete",
@@ -148,7 +126,7 @@ class _ModelState extends State<Model> {
                     ),
                   ),
                   Text(
-                    '$team2Points',
+                    "${BlocProvider.of<CounterCubit>(context).teamBPoints}",
                     style: const TextStyle(
                       fontSize: 100,
                     ),
@@ -159,9 +137,8 @@ class _ModelState extends State<Model> {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      setState(() {
-                        team2Points++;
-                      });
+                    BlocProvider.of<CounterCubit>(context).
+                    TeamAIncrement(team: "B", buttonNumber: 1);
                     },
                     child: const Text(
                       "Add 1 Point",
@@ -175,9 +152,8 @@ class _ModelState extends State<Model> {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      setState(() {
-                        team2Points+=2;
-                      });
+                     BlocProvider.of<CounterCubit>(context).
+                    TeamAIncrement(team: "B", buttonNumber: 2);
                     },
                     child: const Text(
                       "Add 2 Point",
@@ -191,9 +167,8 @@ class _ModelState extends State<Model> {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      setState(() {
-                        team2Points+=3;
-                      });
+                    BlocProvider.of<CounterCubit>(context).
+                    TeamAIncrement(team: "B", buttonNumber: 3);
                     },
                     child: const Text(
                       "Add 3 Point",
@@ -207,7 +182,8 @@ class _ModelState extends State<Model> {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      subtractPoint(2); // Subtract point for Team 1
+                      BlocProvider.of<CounterCubit>(context).
+                    delete(team: "B", buttonNumbe: 0); // Subtract point for Team 1
                     },
                     child: const Text(
                       "Delete",
@@ -220,25 +196,16 @@ class _ModelState extends State<Model> {
 
             ],
           ),
-          const SizedBox(height: 120,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  minimumSize: const Size(150, 50),
-                ),
-                onPressed: reset, // Call reset function on press
-                child: const Text(
-                  "Reset",
-                  style: TextStyle(color: Colors.black, fontSize: 24),
-                ),
-              ),
-            ],
-          ),
+          
         ],
       ),
     );
+    }
+    , listener: (context,state){
+    if(state is CounterAIncrementState){
+    }else{
+    }
+    }
+      );
   }
 }
